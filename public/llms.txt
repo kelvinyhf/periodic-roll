@@ -1,0 +1,7 @@
+# Periodic Roll
+A text-based RNG game combining periodic table elements with progressive compound crafting.
+
+## Links
+- [Live Demo](https://periodicroll.pages.dev)
+- [GitHub Repository](https://github.com/kelvinyhf/periodic-roll)
+- [Developer Profile](https://github.com/kelvinyhf)
