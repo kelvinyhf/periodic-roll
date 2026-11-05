@@ -1,7 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "tailwindcss";
 
 @layer base {
+
   html, body {
     @apply bg-slate-950 text-slate-100;
+    font-family: 'Space Mono', monospace;
   }
+
+  span {
+    @apply block;
+  }
+  
+}
+
+@keyframes rollShift {
+  0% {
+    transform: translateY(20px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-roll-shift {
+  animation: rollShift 0.2s ease-out forwards;
 }
