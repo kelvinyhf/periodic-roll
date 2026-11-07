@@ -1,7 +1,7 @@
 export default function Roll({ handleRoll, lastRollResult }) {
   return (
     <section className="w-full flex-1 flex flex-col justify-between items-center">
-      <div className="flex flex-col items-start gap-2">
+      <div className="w-full flex flex-col items-start gap-2">
         <h2 className="text-4xl font-bold">Roll</h2>
         <p>Click the roll button below!</p>
       </div>
