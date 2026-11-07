@@ -1,7 +1,40 @@
 export const ELEMENTS = {
-  H: { symbol: "H", name: "Hydrogen", chance: 5000, tier: 1 },
-  O: { symbol: "O", name: "Oxygen", chance: 3000, tier: 1 },
-  C: { symbol: "C", name: "Carbon", chance: 2000, tier: 1 },
+
+  // Tier 1 Elements
+  H: { symbol: "H", name: "Hydrogen", chance: 2, tier: 1 },
+  O: { symbol: "O", name: "Oxygen", chance: 4, tier: 1 },
+  Si: { symbol: "Si", name: "Silicon", chance: 8, tier: 1 },
+  Al: { symbol: "Al", name: "Aluminum", chance: 12, tier: 1 },
+  Fe: { symbol: "Fe", name: "Iron", chance: 20, tier: 1 },
+
+  // Tier 2 Elements
+  Ca: { symbol: "Ca", name: "Calcium", chance: 50, tier: 2 },
+  Na: { symbol: "Na", name: "Sodium", chance: 80, tier: 2 },
+  K: { symbol: "K", name: "Potassium", chance: 120, tier: 2 },
+  Mg: { symbol: "Mg", name: "Magnesium", chance: 200, tier: 2 },
+  Cl: { symbol: "Cl", name: "Chlorine", chance: 350, tier: 2 },
+  C: { symbol: "C", name: "Carbon", chance: 500, tier: 2 },
+
+  // Tier 3 Elements
+  /* Ti: { symbol: "Ti", name: "Titanium", chance: 0, tier: 3 },
+  P: { symbol: "P", name: "Phosphorus", chance: 0, tier: 3 },
+  S: { symbol: "S", name: "Sulfur", chance: 0, tier: 3 },
+  Zn: { symbol: "Zn", name: "Zinc", chance: 0, tier: 3 },
+  Cu: { symbol: "Cu", name: "Copper", chance: 0, tier: 3 },
+  N: { symbol: "N", name: "Nitrogen", chance: 0, tier: 3 },
+
+  // Tier 4 Elements
+  Pb: { symbol: "Pb", name: "Lead", chance: 0, tier: 4 },
+  Sn: { symbol: "Sn", name: "Tin", chance: 0, tier: 4 },
+  Li: { symbol: "Li", name: "Lithium", chance: 0, tier: 4 },
+  Ag: { symbol: "Ag", name: "Silver", chance: 0, tier: 4 },
+
+  // Tier 5 Elements
+  U: { symbol: "U", name: "Uranium", chance: 0, tier: 5 },
+  Hg: { symbol: "Hg", name: "Mercury", chance: 0, tier: 5 },
+  Pt: { symbol: "Pt", name: "Platinum", chance: 0, tier: 5 },
+  Au: { symbol: "Au", name: "Gold", chance: 0, tier: 5 } */
+  
 };
 
 export class Engine {
@@ -13,46 +46,35 @@ export class Engine {
     };
   }
   
-  getFinalChance(chance, tier) {
-    const multiplier = Math.pow(this.stats.luck, tier);
-    return chance * multiplier;
-  }
-  
   roll() {
     this.stats.rolls++;
     
-    // Get elements pool
-    const entries = Object.entries(ELEMENTS);
-    const pool = entries.map(([symbol, data]) => ({
-      symbol,
-      chance: this.getFinalChance(data.chance, data.tier)
-    }));
-    
-    // Get total chance and random value for selecting an element
-    const totalChance = pool.reduce((sum, el) => sum + el.chance, 0);
-    let randomVal = Math.random() * totalChance;
-    let selectedElement = entries[0][0];
-    
+    // Sort elements by chance
+    const sortedElements = Object.values(ELEMENTS).sort(
+      (a, b) => b.chance - a.chance
+    );
+    let pickedElement = ELEMENTS.H; // Default to hydrogen
+
     // Get the element
-    for (const el of pool) {
-      if (randomVal < el.chance) {
-        selectedElement = el.symbol;
+    for (const el of sortedElements) {
+      const effectiveChance = Math.max(1, el.chance / this.stats.luck);
+      if (Math.random() <= 1 / effectiveChance) {
+        pickedElement = el;
         break;
       }
-      randomVal -= el.chance;
     }
     
     // Add the selected element to inventory
-    if (!this.stats.inventory[selectedElement]) {
-      this.stats.inventory[selectedElement] = 0;
-    }
-    this.stats.inventory[selectedElement]++;
+    const symbol = pickedElement.symbol;
+    if (!this.stats.inventory[symbol]) this.stats.inventory[symbol] = 0;
+    this.stats.inventory[symbol]++;
     
     // Return values for rendering the result
     return {
-      result: selectedElement,
-      data: ELEMENTS[selectedElement]
+      result: symbol,
+      data: pickedElement,
     };
+
   }
   
 }

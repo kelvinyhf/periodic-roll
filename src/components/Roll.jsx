@@ -8,7 +8,7 @@ export default function Roll({ handleRoll, lastRollResult }) {
 
       <div key={Date.now()} className="flex flex-col items-center gap-2 animate-roll-shift">
         <span className="text-lg font-semibold">{ lastRollResult?.data?.name || "Nothing" } ({ lastRollResult?.result || "N/A" })</span>
-        <span>1 in { lastRollResult?.data?.chance ? Math.floor(10000 / lastRollResult.data.chance) : "1" }</span>
+        <span>1 in { lastRollResult?.data?.chance ? lastRollResult.data.chance.toLocaleString() : "1" }</span>
       </div>
       
       <button onClick={handleRoll} className="w-full px-4 py-2 text-lg font-medium border-2 border-white hover:bg-slate-100/15 active:bg-slate-100/30">Roll</button>
