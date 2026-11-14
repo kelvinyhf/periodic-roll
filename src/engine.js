@@ -1,39 +1,38 @@
 export const ELEMENTS = {
 
   // Tier 1 Elements
-  H: { symbol: "H", name: "Hydrogen", chance: 2, tier: 1 },
-  O: { symbol: "O", name: "Oxygen", chance: 4, tier: 1 },
-  Si: { symbol: "Si", name: "Silicon", chance: 8, tier: 1 },
-  Al: { symbol: "Al", name: "Aluminum", chance: 12, tier: 1 },
-  Fe: { symbol: "Fe", name: "Iron", chance: 20, tier: 1 },
+  H: { symbol: "H", name: "Hydrogen", chance: 2, tier: 1, isMetal: false, valency: 1 },
+  O: { symbol: "O", name: "Oxygen", chance: 4, tier: 1, isMetal: false, charge: -2, valency: 2 },
+  Al: { symbol: "Al", name: "Aluminum", chance: 12, tier: 1, isMetal: true, charge: 3, valency: 3 },
+  Fe: { symbol: "Fe", name: "Iron", chance: 20, tier: 1, isMetal: true, charge: 2, valency: 2 },
 
   // Tier 2 Elements
-  Ca: { symbol: "Ca", name: "Calcium", chance: 50, tier: 2 },
-  Na: { symbol: "Na", name: "Sodium", chance: 80, tier: 2 },
-  K: { symbol: "K", name: "Potassium", chance: 120, tier: 2 },
-  Mg: { symbol: "Mg", name: "Magnesium", chance: 200, tier: 2 },
-  Cl: { symbol: "Cl", name: "Chlorine", chance: 350, tier: 2 },
-  C: { symbol: "C", name: "Carbon", chance: 500, tier: 2 },
+  Ca: { symbol: "Ca", name: "Calcium", chance: 50, tier: 2, isMetal: true, charge: 2, valency: 2 },
+  Na: { symbol: "Na", name: "Sodium", chance: 80, tier: 2, isMetal: true, charge: 1, valency: 1 },
+  K: { symbol: "K", name: "Potassium", chance: 120, tier: 2, isMetal: true, charge: 1, valency: 1 },
+  Mg: { symbol: "Mg", name: "Magnesium", chance: 200, tier: 2, isMetal: true, charge: 2, valency: 2 },
+  Cl: { symbol: "Cl", name: "Chlorine", chance: 350, tier: 2, isMetal: false, charge: -1, valency: 1 },
+  C: { symbol: "C", name: "Carbon", chance: 500, tier: 2, isMetal: false, valency: 4 },
 
   // Tier 3 Elements
-  /* Ti: { symbol: "Ti", name: "Titanium", chance: 0, tier: 3 },
-  P: { symbol: "P", name: "Phosphorus", chance: 0, tier: 3 },
-  S: { symbol: "S", name: "Sulfur", chance: 0, tier: 3 },
-  Zn: { symbol: "Zn", name: "Zinc", chance: 0, tier: 3 },
-  Cu: { symbol: "Cu", name: "Copper", chance: 0, tier: 3 },
-  N: { symbol: "N", name: "Nitrogen", chance: 0, tier: 3 },
+  Ti: { symbol: "Ti", name: "Titanium", chance: 1200, tier: 3, isMetal: true, charge: 4, valency: 4 },
+  P: { symbol: "P", name: "Phosphorus", chance: 2500, tier: 3, isMetal: false, valency: 3 },
+  S: { symbol: "S", name: "Sulfur", chance: 4000, tier: 3, isMetal: false, charge: -2, valency: 2 },
+  Zn: { symbol: "Zn", name: "Zinc", chance: 6500, tier: 3, isMetal: true, charge: 2, valency: 2 },
+  Cu: { symbol: "Cu", name: "Copper", chance: 9000, tier: 3, isMetal: true, charge: 2, valency: 2 },
+  N: { symbol: "N", name: "Nitrogen", chance: 12000, tier: 3, isMetal: false, valency: 3 },
 
   // Tier 4 Elements
-  Pb: { symbol: "Pb", name: "Lead", chance: 0, tier: 4 },
-  Sn: { symbol: "Sn", name: "Tin", chance: 0, tier: 4 },
-  Li: { symbol: "Li", name: "Lithium", chance: 0, tier: 4 },
-  Ag: { symbol: "Ag", name: "Silver", chance: 0, tier: 4 },
+  Pb: { symbol: "Pb", name: "Lead", chance: 25000, tier: 4, isMetal: true, charge: 2, valency: 2 },
+  Sn: { symbol: "Sn", name: "Tin", chance: 40000, tier: 4, isMetal: true, charge: 2, valency: 4 },
+  Li: { symbol: "Li", name: "Lithium", chance: 65000, tier: 4, isMetal: true, charge: 1, valency: 1 },
+  Ag: { symbol: "Ag", name: "Silver", chance: 100000, tier: 4, isMetal: true, charge: 1, valency: 1 },
 
   // Tier 5 Elements
-  U: { symbol: "U", name: "Uranium", chance: 0, tier: 5 },
-  Hg: { symbol: "Hg", name: "Mercury", chance: 0, tier: 5 },
-  Pt: { symbol: "Pt", name: "Platinum", chance: 0, tier: 5 },
-  Au: { symbol: "Au", name: "Gold", chance: 0, tier: 5 } */
+  U: { symbol: "U", name: "Uranium", chance: 250000, tier: 5, isMetal: true, charge: 4, valency: 6 },
+  Hg: { symbol: "Hg", name: "Mercury", chance: 500000, tier: 5, isMetal: true, charge: 2, valency: 2 },
+  Pt: { symbol: "Pt", name: "Platinum", chance: 1000000, tier: 5, isMetal: true, charge: 2, valency: 2 },
+  Au: { symbol: "Au", name: "Gold", chance: 2500000, tier: 5, isMetal: true, charge: 1, valency: 1 }
   
 };
 
@@ -75,6 +74,47 @@ export class Engine {
       data: pickedElement,
     };
 
+  }
+
+  craft(elements) {
+    let hasMetal = false;
+    let hasNonMetal = false;
+    let totalCharge = 0;
+    let totalValency = 0;
+    let maxValency = 0;
+
+    // Loop through all elements to get their charge or valency
+    for (const [symbol, count] of Object.entries(elements)) {
+      const element = ELEMENTS[symbol];
+      if (element.isMetal) {
+        hasMetal = true;
+      } else {
+        hasNonMetal = true;
+      }
+
+      // Add charge or valency
+      if (element.charge !== undefined) {
+        totalCharge += element.charge * count;
+      }
+      if (element.valency !== undefined) {
+        totalValency += element.valency * count;
+        if (element.valency > maxValency) maxValency = element.valency;
+      }
+
+    }
+
+    // Check if it's a valid ionic compound
+    if (hasMetal && hasNonMetal && totalCharge === 0) {
+      return true;
+    }
+
+    // Check if it's a valid covalent compound
+    const othersValency = totalValency - maxValency;
+    if (!hasMetal && hasNonMetal && totalValency >= 2 && totalValency % 2 === 0 && maxValency <= othersValency) {
+      return true;
+    }
+
+    return false;
   }
   
 }
