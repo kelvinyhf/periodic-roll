@@ -8,10 +8,10 @@ export const ELEMENTS = {
 
   // Tier 2 Elements
   Ca: { symbol: "Ca", name: "Calcium", chance: 50, tier: 2, isMetal: true, charge: 2, valency: 2 },
-  Na: { symbol: "Na", name: "Sodium", chance: 80, tier: 2, isMetal: true, charge: 1, valency: 1 },
+  Na: { symbol: "Na", name: "Sodium", chance: 2, tier: 2, isMetal: true, charge: 1, valency: 1 },
   K: { symbol: "K", name: "Potassium", chance: 120, tier: 2, isMetal: true, charge: 1, valency: 1 },
   Mg: { symbol: "Mg", name: "Magnesium", chance: 200, tier: 2, isMetal: true, charge: 2, valency: 2 },
-  Cl: { symbol: "Cl", name: "Chlorine", chance: 350, tier: 2, isMetal: false, charge: -1, valency: 1 },
+  Cl: { symbol: "Cl", name: "Chlorine", chance: 2, tier: 2, isMetal: false, charge: -1, valency: 1 },
   C: { symbol: "C", name: "Carbon", chance: 500, tier: 2, isMetal: false, valency: 4 },
 
   // Tier 3 Elements
@@ -32,8 +32,10 @@ export const ELEMENTS = {
   U: { symbol: "U", name: "Uranium", chance: 250000, tier: 5, isMetal: true, charge: 4, valency: 6 },
   Hg: { symbol: "Hg", name: "Mercury", chance: 500000, tier: 5, isMetal: true, charge: 2, valency: 2 },
   Pt: { symbol: "Pt", name: "Platinum", chance: 1000000, tier: 5, isMetal: true, charge: 2, valency: 2 },
-  Au: { symbol: "Au", name: "Gold", chance: 2500000, tier: 5, isMetal: true, charge: 1, valency: 1 }
+  Au: { symbol: "Au", name: "Gold", chance: 2500000, tier: 5, isMetal: true, charge: 1, valency: 1 },
   
+  NaCl: { symbol: "NaCl", name: "Sodium Chloride" }
+
 };
 
 export class Engine {
@@ -103,14 +105,25 @@ export class Engine {
 
     }
 
-    // Check if it's a valid ionic compound
-    if (hasMetal && hasNonMetal && totalCharge === 0) {
-      return true;
-    }
-
-    // Check if it's a valid covalent compound
+    // Check if it's a valid ionic/covalent compound
     const othersValency = totalValency - maxValency;
-    if (!hasMetal && hasNonMetal && totalValency >= 2 && totalValency % 2 === 0 && maxValency <= othersValency) {
+    if (
+      (hasMetal && hasNonMetal && totalCharge === 0)
+      ||
+      (!hasMetal && hasNonMetal && totalValency >= 2 && totalValency % 2 === 0 && maxValency <= othersValency)
+    ) {
+
+      // Remove added elements
+      for (const [symbol, count] of Object.entries(elements)) {
+        this.stats.inventory[symbol] -= count;
+        if (this.stats.inventory[symbol] === 0) delete this.stats.inventory[symbol];
+      }
+
+      // Add the compound
+      const compound = Object.keys(elements).join("");
+      if (!this.stats.inventory[compound]) this.stats.inventory[compound] = 0;
+      this.stats.inventory[compound]++;
+
       return true;
     }
 

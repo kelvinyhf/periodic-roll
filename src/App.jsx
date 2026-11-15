@@ -32,6 +32,16 @@ export default function App() {
 
   }
 
+  function handleCraft(added) {
+    const result = engineRef.current.craft(added);
+    setStats({
+      rolls: engineRef.current.stats.rolls,
+      luck: engineRef.current.stats.luck,
+      inventory: { ...engineRef.current.stats.inventory }
+    });
+    
+  }
+  
   return (
     <div className="min-h-svh flex flex-col justify-between items-center">
       
@@ -46,7 +56,7 @@ export default function App() {
       <main className="w-full px-12 pt-24 pb-28 flex-1 flex flex-col">
         {currentPage === "roll" && <Roll handleRoll={handleRoll} lastRollResult={lastRollResult} />}
         {currentPage === "inventory" && <Inventory inventory={stats.inventory} />}
-        {currentPage === "reactor" && <Reactor />}
+        {currentPage === "reactor" && <Reactor handleCraft={handleCraft} inventory={stats.inventory} />}
       </main>
       
       {/* Navigation */}
