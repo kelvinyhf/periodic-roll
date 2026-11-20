@@ -1,6 +1,8 @@
 # Periodic Roll
 A text-based RNG game combining periodic table elements with progressive compound crafting
 
+![Game Preview](./preview.png)
+
 ## How to Play
 Simply click the roll button! You'll then roll a random element based on your luck, like Hydrogen (H), Sodium (Na), or Oxygen (O). You can view your inventory or craft compounds which can boost your luck in the reactor (both in the bottom bar).
 Some chemistry knowledge is needed (fr)
