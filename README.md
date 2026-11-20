@@ -11,3 +11,6 @@ Simply click [here](https://periodicroll.pages.dev/)!
 ## How I Built It
 I built this with React, Vite, and Tailwind, which were quite challenging for me because I'm new to React.
 Thank you!
+
+## License
+This project is licensed under the MIT License - see the LICENSE.md file for details
