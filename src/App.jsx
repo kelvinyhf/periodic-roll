@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Engine, ELEMENTS } from "./engine";
+import { useState, useRef } from "react";
+import { Engine } from "./engine";
 import Roll from "./components/Roll";
 import Inventory from "./components/Inventory";
 import Reactor from "./components/Reactor";
@@ -33,13 +33,13 @@ export default function App() {
   }
 
   function handleCraft(added) {
-    const result = engineRef.current.craft(added);
+    const craftedFormula = engineRef.current.craft(added);
     setStats({
       rolls: engineRef.current.stats.rolls,
       luck: engineRef.current.stats.luck,
       inventory: { ...engineRef.current.stats.inventory }
     });
-    
+    return craftedFormula;
   }
   
   return (
@@ -48,8 +48,8 @@ export default function App() {
       {/* Stats Display */}
       <header className="fixed top-0 left-0 right-0 bg-slate-900 p-4 border-b-2 border-slate-300 flex justify-center items-center gap-16">
         <h1 className="hidden" aria-hidden="true">Periodic Roll</h1>
-        <span className="bg-blue-600/40 border-b border-blue-200 min-w-16 px-2 py-1 font-semibold text-sm text-right">{ stats.rolls }</span>
-        <span className="bg-yellow-600/40 border-b border-yellow-200 min-w-16 px-2 py-1 font-semibold text-sm text-right">{ stats.luck }</span>
+        <span className="bg-blue-600/40 border-b border-blue-200 min-w-16 px-2 py-1 font-semibold text-sm text-right">{ stats.rolls } Rolls</span>
+        <span className="bg-yellow-600/40 border-b border-yellow-200 min-w-16 px-2 py-1 font-semibold text-sm text-right">{ stats.luck } Luck</span>
       </header>
 
       {/* Main Content */}

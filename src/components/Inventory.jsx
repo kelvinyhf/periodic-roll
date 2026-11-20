@@ -1,4 +1,4 @@
-import { ELEMENTS } from "../engine";
+import ELEMENTS from "../database";
 
 export default function Inventory({ inventory }) {
   return (
@@ -12,7 +12,7 @@ export default function Inventory({ inventory }) {
         {Object.entries(inventory).map(([symbol, count]) => {
           const elementData = ELEMENTS[symbol];
           return (
-            <li className="w-full border border-white px-4 py-2 flex justify-between items-center">
+            <li key={symbol} className="w-full border border-white px-4 py-2 flex justify-between items-center">
               <span>{ elementData.name } ({ symbol })</span>
               <span>x{ count }</span>
             </li>
